@@ -1,0 +1,147 @@
+openapi: "3.0.0"
+info:
+  title: Jolli API
+  description: Documentation management and generation API
+  version: "1.0.0"
+  contact:
+    name: Jolli Team
+
+servers:
+  - url: https://api.jolli.dev/v1
+    description: Production server
+
+paths:
+  /docs:
+    get:
+      summary: List all documents
+      operationId: listDocs
+      tags:
+        - documents
+      parameters:
+        - name: siteId
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        "200":
+          description: List of documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Document"
+    post:
+      summary: Create a document
+      operationId: createDoc
+      tags:
+        - documents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewDocument"
+      responses:
+        "201":
+          description: Document created
+
+  /docsites:
+    get:
+      summary: List all doc sites
+      operationId: listDocsites
+      tags:
+        - docsites
+      responses:
+        "200":
+          description: List of doc sites
+    post:
+      summary: Create a doc site
+      operationId: createDocsite
+      tags:
+        - docsites
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewDocsite"
+      responses:
+        "201":
+          description: Doc site created
+
+  /docsites/{id}/build:
+    post:
+      summary: Build a doc site
+      operationId: buildDocsite
+      tags:
+        - docsites
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "202":
+          description: Build started
+
+components:
+  schemas:
+    Document:
+      type: object
+      properties:
+        jrn:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        contentType:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+
+    NewDocument:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        contentType:
+          type: string
+          default: text/markdown
+
+    Docsite:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        displayName:
+          type: string
+        status:
+          type: string
+          enum: [pending, building, published, failed]
+
+    NewDocsite:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string

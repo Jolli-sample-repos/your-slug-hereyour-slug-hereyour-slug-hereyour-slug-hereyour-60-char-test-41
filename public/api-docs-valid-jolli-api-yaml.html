@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Reference</title>
+  <style>
+    /* Full viewport */
+    html, body { margin: 0; padding: 0; height: 100%; }
+  </style>
+</head>
+<body>
+  <script>
+    // Read theme from URL query parameter and write script with config inline
+    // This must happen before Scalar loads so the config is available
+    (function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var isDark = urlParams.get('theme') === 'dark';
+      var config = isDark ? {"layout":"modern","showSidebar":true,"defaultOpenAllTags":true,"hideClientButton":true,"hideDownloadButton":true,"customCss":"\n    /* Hide Powered by Scalar */\n    .powered-by-scalar, [class*=\"powered\"], a[href*=\"scalar.com\"]:not([href*=\"proxy\"]) { display: none !important; }\n    /* Hide Share button */\n    button[aria-label=\"Share\"], [class*=\"share-button\"], [class*=\"ShareButton\"] { display: none !important; }\n    /* Hide Generate SDKs link */\n    a[href*=\"sdk\"], [class*=\"generate-sdk\"], [class*=\"GenerateSdk\"] { display: none !important; }\n    /* Hide footer branding */\n    .scalar-api-reference footer a, .footer-branding { display: none !important; }\n  ","darkMode":true} : {"layout":"modern","showSidebar":true,"defaultOpenAllTags":true,"hideClientButton":true,"hideDownloadButton":true,"customCss":"\n    /* Hide Powered by Scalar */\n    .powered-by-scalar, [class*=\"powered\"], a[href*=\"scalar.com\"]:not([href*=\"proxy\"]) { display: none !important; }\n    /* Hide Share button */\n    button[aria-label=\"Share\"], [class*=\"share-button\"], [class*=\"ShareButton\"] { display: none !important; }\n    /* Hide Generate SDKs link */\n    a[href*=\"sdk\"], [class*=\"generate-sdk\"], [class*=\"GenerateSdk\"] { display: none !important; }\n    /* Hide footer branding */\n    .scalar-api-reference footer a, .footer-branding { display: none !important; }\n  ","darkMode":false};
+
+      document.write('<script id="api-reference" data-url="/valid-jolli-api-yaml.yaml" data-proxy-url="https://proxy.scalar.com" data-configuration=\'' + JSON.stringify(config) + '\'><\/script>');
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+</body>
+</html>
